@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Denish Limbasiya — Finance Executive</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:        #131B26;
+    --paper:     #EDE8DD;
+    --paper-dim: #B7B0A0;
+    --brass:     #C99A4B;
+    --teal:      #5C9389;
+    --muted:     #6E7A8A;
+    --hairline:  rgba(237,232,221,0.18);
+    --hairline-strong: rgba(237,232,221,0.32);
+  }
+
+  *{ box-sizing: border-box; }
+
+  html,body{
+    margin:0;
+    padding:0;
+    background:var(--bg);
+    color:var(--paper);
+    font-family:'Inter', sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:48px 20px;
+    position:relative;
+    overflow-x:hidden;
+  }
+
+  /* faint ledger ruling across the whole page */
+  body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    background-image: repeating-linear-gradient(
+      to bottom,
+      transparent 0,
+      transparent 35px,
+      rgba(237,232,221,0.035) 36px
+    );
+    pointer-events:none;
+  }
+
+  .statement{
+    width:100%;
+    max-width:480px;
+    position:relative;
+    z-index:1;
+  }
+
+  .seal{
+    width:56px;
+    height:56px;
+    margin:0 auto 28px;
+    border:1px solid var(--brass);
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-family:'Fraunces', serif;
+    font-size:17px;
+    font-weight:500;
+    letter-spacing:0.04em;
+    color:var(--brass);
+    opacity:0;
+    animation: rise 0.7s ease-out 0.05s forwards;
+  }
+
+  .eyebrow{
+    text-align:center;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    letter-spacing:0.22em;
+    color:var(--muted);
+    margin:0 0 14px;
+    text-transform:uppercase;
+    opacity:0;
+    animation: rise 0.7s ease-out 0.12s forwards;
+  }
+
+  h1.name{
+    text-align:center;
+    font-family:'Fraunces', serif;
+    font-weight:500;
+    font-size:clamp(30px, 6vw, 40px);
+    letter-spacing:0.01em;
+    margin:0 0 8px;
+    line-height:1.1;
+    opacity:0;
+    animation: rise 0.7s ease-out 0.18s forwards;
+  }
+
+  .role{
+    text-align:center;
+    font-size:15.5px;
+    color:var(--paper);
+    margin:0 0 2px;
+    font-weight:500;
+    opacity:0;
+    animation: rise 0.7s ease-out 0.24s forwards;
+  }
+
+  .org{
+    text-align:center;
+    font-size:14px;
+    color:var(--paper-dim);
+    margin:0 0 14px;
+    opacity:0;
+    animation: rise 0.7s ease-out 0.3s forwards;
+  }
+
+  .loc{
+    text-align:center;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    letter-spacing:0.16em;
+    color:var(--brass);
+    margin:0 0 30px;
+    text-transform:uppercase;
+    opacity:0;
+    animation: rise 0.7s ease-out 0.36s forwards;
+  }
+
+  .rule{
+    border:none;
+    margin:0 0 24px;
+    height:1px;
+    background:var(--hairline);
+    opacity:0;
+    animation: rise 0.7s ease-out 0.4s forwards;
+  }
+
+  .rule.double{
+    height:5px;
+    background:none;
+    border-top:1px solid var(--hairline-strong);
+    border-bottom:1px solid var(--hairline);
+  }
+
+  .bio{
+    text-align:center;
+    font-size:15px;
+    line-height:1.65;
+    color:var(--paper-dim);
+    margin:0 0 26px;
+    padding:0 6px;
+    opacity:0;
+    animation: rise 0.7s ease-out 0.46s forwards;
+  }
+
+  ul.ledger{
+    list-style:none;
+    margin:0 0 26px;
+    padding:0;
+    opacity:0;
+    animation: rise 0.7s ease-out 0.52s forwards;
+  }
+
+  ul.ledger li{
+    border-bottom:1px solid var(--hairline);
+  }
+  ul.ledger li:first-child{
+    border-top:1px solid var(--hairline);
+  }
+
+  .row{
+    display:flex;
+    align-items:baseline;
+    gap:12px;
+    padding:14px 4px;
+    text-decoration:none;
+    color:var(--paper);
+    transition: color 0.2s ease;
+  }
+
+  .row:hover, .row:focus-visible{
+    color:var(--brass);
+  }
+  .row:focus-visible{
+    outline:1px dashed var(--brass);
+    outline-offset:4px;
+  }
+
+  .idx{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    color:var(--muted);
+    flex-shrink:0;
+  }
+
+  .label{
+    font-size:15px;
+    font-weight:500;
+    flex-shrink:0;
+    white-space:nowrap;
+  }
+
+  .dots{
+    flex:1;
+    border-bottom:1px dotted var(--hairline-strong);
+    margin-bottom:5px;
+    transition: border-color 0.2s ease;
+  }
+  .row:hover .dots, .row:focus-visible .dots{
+    border-color: var(--brass);
+  }
+
+  .value{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12.5px;
+    color:var(--paper-dim);
+    white-space:nowrap;
+    flex-shrink:0;
+    transition: color 0.2s ease;
+  }
+  .row:hover .value, .row:focus-visible .value{
+    color:var(--brass);
+  }
+
+  .arrow{
+    font-size:14px;
+    color:var(--teal);
+    flex-shrink:0;
+    transition: transform 0.2s ease, color 0.2s ease;
+  }
+  .row:hover .arrow, .row:focus-visible .arrow{
+    transform: translateX(3px);
+    color:var(--brass);
+  }
+
+  .foot{
+    text-align:center;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10.5px;
+    letter-spacing:0.1em;
+    color:var(--muted);
+    text-transform:uppercase;
+    opacity:0;
+    animation: rise 0.7s ease-out 0.58s forwards;
+  }
+
+  @keyframes rise{
+    from{ opacity:0; transform: translateY(10px); }
+    to{ opacity:1; transform: translateY(0); }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .seal, .eyebrow, h1.name, .role, .org, .loc, .rule, .bio, ul.ledger, .foot{
+      animation:none !important;
+      opacity:1 !important;
+      transform:none !important;
+    }
+  }
+
+  @media (max-width: 420px){
+    .label{ font-size:14px; }
+    .value{ font-size:11.5px; }
+  }
+</style>
+</head>
+<body>
+
+  <main class="statement">
+    <div class="seal">DL</div>
+    <p class="eyebrow">Personal Record</p>
+    <h1 class="name">Denish Limbasiya</h1>
+    <p class="role">Finance Executive</p>
+    <p class="org">Yanolja Loud Solution</p>
+    <p class="loc">Surat, Gujarat — India</p>
+
+    <hr class="rule double">
+
+    <p class="bio">
+      Finance professional with a focus on financial reporting, analysis and
+      process efficiency. Based in Surat, working with global teams at
+      Yanolja Loud Solution.
+    </p>
+
+    <hr class="rule">
+
+    <ul class="ledger">
+      <!-- EDIT EACH href BELOW WITH YOUR REAL LINKS -->
+      <li>
+        <a class="row" href="https://www.linkedin.com/in/REPLACE-ME" target="_blank" rel="noopener">
+          <span class="idx">01</span>
+          <span class="label">LinkedIn</span>
+          <span class="dots"></span>
+          <span class="value">Connect</span>
+          <span class="arrow">→</span>
+        </a>
+      </li>
+      <li>
+        <a class="row" href="mailto:replace.me@example.com">
+          <span class="idx">02</span>
+          <span class="label">Email</span>
+          <span class="dots"></span>
+          <span class="value">replace.me@example.com</span>
+          <span class="arrow">→</span>
+        </a>
+      </li>
+      <li>
+        <a class="row" href="tel:+910000000000">
+          <span class="idx">03</span>
+          <span class="label">Phone</span>
+          <span class="dots"></span>
+          <span class="value">+91 00000 00000</span>
+          <span class="arrow">→</span>
+        </a>
+      </li>
+      <li>
+        <a class="row" href="https://wa.me/910000000000" target="_blank" rel="noopener">
+          <span class="idx">04</span>
+          <span class="label">WhatsApp</span>
+          <span class="dots"></span>
+          <span class="value">Message</span>
+          <span class="arrow">→</span>
+        </a>
+      </li>
+    </ul>
+
+    <hr class="rule">
+
+    <p class="foot">Statement of contact · Updated June 2026</p>
+  </main>
+
+</body>
+</html>
